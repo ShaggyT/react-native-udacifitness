@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { View, Text } from 'react-native'
 import { getMetricMetaInfo } from '../utils/helpers'
+import UdaciSlider from './UdaciSlider'
+import UdaciSteppers from './UdaciSteppers'
 
 export default class AddEntry extends Component {
   state = {
@@ -40,10 +42,35 @@ export default class AddEntry extends Component {
   }
 
   render() {
+    const  metaInfo  = getMetricMetaInfo()
     return(
       <View>
-        {/* <Text>Add Entry</Text> */}
-        {getMetricMetaInfo('swim').getIcon()}
+        {/* this return an array which has 5 properties: bike, swim, ...👇 */}
+        {Object.keys(metaInfo).map((key) => {
+            const { getIcon, type, ...rest } = metaInfo[key]
+            const value = this.state[key]
+            return(
+              //  because we are mapping we need to give it a key
+              <View key={key}>
+                {getIcon()}
+                {type === 'slider'
+                  ? <UdaciSlider
+                      value={value}
+                      onChange={(value) => this.slide(key,value)}
+                      {...rest}
+                    />
+                  :
+                    <UdaciSteppers
+                      value={value}
+                      onIncrement={() => this.increment(key)}
+                      onDecrement={() => this.decrement(key)}
+                      {...rest}
+                    />
+                }
+              </View>
+            )
+          })
+        }
       </View>
     )
   }
