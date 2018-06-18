@@ -21,10 +21,10 @@ function SubmitBtn ({onPress}) {
 export default class AddEntry extends Component {
   state = {
     run: 0,
-    bike: 10,
+    bike: 0,
     swim: 0,
     sleep: 0,
-    eat: 5,
+    eat: 0,
   }
 
   increment = (metric) => {
@@ -87,10 +87,12 @@ export default class AddEntry extends Component {
         {Object.keys(metaInfo).map((key) => {
             const { getIcon, type, ...rest } = metaInfo[key]
             const value = this.state[key]
+
             return(
               //  because we are mapping we need to give it a key
               <View key={key}>
                 {getIcon()}
+                {/* {...rest} passing everything else thats coming from metaInfo[key] */}
                 {type === 'slider'
                   ? <UdaciSlider
                       value={value}
