@@ -10,7 +10,7 @@ export function receiveEntries (entries) {
 
 export function addEntry (entry) {
   return {
-    type: AddEntry, 
+    type: ADD_ENTRY, 
     entry,
   }
 }
