@@ -124,7 +124,8 @@ class AddEntry extends Component {
 
     return(
       <View style={styles.container}>
-        <DateHeader date={(new Date()).toLocaleDateString()} />
+        <DateHeader
+          date={(new Date()).toLocaleDateString()} />
 
         {/* <Text>{JSON.stringify(this.state)}</Text> */}
         {/* this return an array which has 5 properties: bike, swim, ...👇 */}
