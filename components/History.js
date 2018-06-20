@@ -14,8 +14,12 @@ import { fetchCalendarResults } from '../utils/api'
 import { white } from '../utils/colors'
 import DateHeader from './DateHeader'
 import MetricCard from './MetricCard'
+import { AppLoading } from 'expo'
 
 class History extends Component {
+  state = {
+    ready: false,
+  }
   //  when this component is mount we want to fetch our calendar results
   componentDidMount () {
     const { dispatch } = this.props
@@ -31,7 +35,7 @@ class History extends Component {
           }))
         }
       })
-
+      .then(() => this.setState(() => ({ready: true})))
   }
   //  the object : either {run: , bike: , } or {today: } - its the day coming from the redux store
   renderItem = ({ today, ...metrics }, formattedDate, key) => (
@@ -67,6 +71,11 @@ class History extends Component {
 
   render() {
     const { entries } = this.props
+    const { ready } = this.state
+
+    if(ready === false) {
+      return <AppLoading />
+    }
     return (
       <UdaciFitnessCalendar
        items={entries}
