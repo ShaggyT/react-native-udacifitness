@@ -1,5 +1,12 @@
 import React, { Component } from 'react'
-import { View, Text, ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native'
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  StyleSheet,
+  TouchableOpacity,
+  Animated,
+ } from 'react-native'
 import { Foundation } from '@expo/vector-icons'
 import { white, purple } from '../utils/colors'
 import { calculateDirection } from '../utils/helpers'
@@ -9,7 +16,8 @@ export default class Live extends Component {
   state = {
     coords: null,
     status: 'granted',
-    direction: ''
+    direction: '',
+    bounceValue: new Animated.Value(1),
   }
 
   componentDidMount () {
@@ -30,6 +38,7 @@ export default class Live extends Component {
   }
 
   setLocation = () => {
+    // passing it two argumenets: an options object and a callback to be called whenever the location changes
     Location.watchPositionAsync({
       enableHighAccuracy: true,
       // how often it updates - update as quickly as possible
@@ -38,7 +47,15 @@ export default class Live extends Component {
       //  call this fucntion whenever position changes
     }, ({ coords }) => {
       const newDirection = calculateDirection(coords.heading)
-      const { direction } = this.state
+      const { direction, bounceValue } = this.state
+
+      if (newDirection !== direction) {
+        Animated.sequence([
+          Animated.timing(bounceValue, {duration: 200, toValue: 1.04}),
+          Animated.spring(bounceValue, {toValue: 1, friction: 4})
+        ]).start()
+      }
+
       this.setState(() => ({
         coords,
         status: 'granted',
@@ -50,6 +67,7 @@ export default class Live extends Component {
   askPermission = () => {
     Permissions.askAsync(Permissions.LOCATION)
       .then(({ status}) => {
+        // getting a status back
         if (status === 'granted') {
           return this.setLocation()
         }
@@ -59,7 +77,7 @@ export default class Live extends Component {
   }
 
   render() {
-    const { status, coords, direction } = this.state
+    const { status, coords, direction, bounceValue } = this.state
 
     if (status === null) {
       return <ActivityIndicator style={{marginTop: 30}}/>
@@ -98,9 +116,9 @@ export default class Live extends Component {
           <Text style={styles.header}>
             Your're heading
           </Text>
-          <Text style={styles.direction}>
+          <Animated.Text style={[styles.direction, {transform: [{scale: bounceValue}]}]}>
             { direction }
-          </Text>
+          </Animated.Text>
         </View>
 
         <View style={styles.metricContainer}>
