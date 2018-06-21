@@ -105,6 +105,7 @@ class AddEntry extends Component {
   }
 
   toHome = () => {
+    // go back from the route that has the key of AddEntry - go from where we are back to where we previously were
       this.props.navigation.dispatch(NavigationActions.back({key: 'AddEntry'}))
   }
 

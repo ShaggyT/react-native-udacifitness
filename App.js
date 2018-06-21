@@ -15,6 +15,7 @@ import { purple, white } from './utils/colors'
 import { createBottomTabNavigator, createStackNavigator } from 'react-navigation'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import EntryDetail from './components/EntryDetail'
+import Live from './components/Live'
 
 //  custome statusbar
 function UdaciStatusBar({backgroundColor, ...props}) {
@@ -41,6 +42,13 @@ const Tabs = createBottomTabNavigator({
       tabBarIcon: ({ tintColor }) => <FontAwesome name='plus-square' size={30} color={tintColor} />
     },
   },
+  Live: {
+    screen: Live,
+    navigationOptions: {
+      tabBarLabel: 'Live',
+      tabBarIcon: ({ tintColor }) => <Ionicons name='ios-speedometer' size={30} color={tintColor} />
+    }
+  }
 }, {
   //  get rid of any headers that we will eventually have in our app
   navigationOptions: {
