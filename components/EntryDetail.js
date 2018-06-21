@@ -30,6 +30,7 @@ class EntryDetail extends Component {
     goBack()
     removeEntry(entryId)
    }
+
   shouldComponentUpdate (nextProps) {
     return nextProps.metrics !== null && !nextProps.metrics.today
   }
