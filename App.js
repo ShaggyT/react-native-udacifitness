@@ -12,8 +12,9 @@ import reducer from './reducers'
 import History from './components/History'
 import { Constants } from 'expo'
 import { purple, white } from './utils/colors'
-import { createBottomTabNavigator } from 'react-navigation'
+import { createBottomTabNavigator, createStackNavigator } from 'react-navigation'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
+import EntryDetail from './components/EntryDetail'
 
 //  custome statusbar
 function UdaciStatusBar({backgroundColor, ...props}) {
@@ -41,7 +42,7 @@ const Tabs = createBottomTabNavigator({
     },
   },
 }, {
-  //  get rid of any headers that we will eventually have in our app 
+  //  get rid of any headers that we will eventually have in our app
   navigationOptions: {
     header: null
   },
@@ -61,6 +62,26 @@ const Tabs = createBottomTabNavigator({
   }
 })
 
+const MainNavigator = createStackNavigator(
+  {
+  Home: {
+    screen: Tabs,
+  },
+  EntryDetail: {
+    screen: EntryDetail,
+    navigationOptions: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple,
+      }
+    }
+  }
+},
+{
+   headerMode: 'none',
+}
+)
+
 export default class App extends React.Component {
   render() {
     return (
@@ -73,7 +94,8 @@ export default class App extends React.Component {
            />
           {/* <AddEntry /> */}
           {/* <History /> */}
-          <Tabs />
+          {/* <Tabs /> */}
+          <MainNavigator />
         </View>
     </Provider>
     );
