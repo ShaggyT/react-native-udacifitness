@@ -66,6 +66,11 @@ const MainNavigator = createStackNavigator(
   {
   Home: {
     screen: Tabs,
+    headerMode: 'none',
+    header: null,
+    navigationOptions: {
+        header: null,
+    }
   },
   EntryDetail: {
     screen: EntryDetail,
@@ -78,9 +83,11 @@ const MainNavigator = createStackNavigator(
   }
 },
 {
-   headerMode: 'none',
+   // headerMode: 'none',
 }
 )
+
+
 
 export default class App extends React.Component {
   render() {
