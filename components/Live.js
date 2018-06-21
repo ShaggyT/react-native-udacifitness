@@ -19,7 +19,7 @@ export default class Live extends Component {
         if (status === 'granted') {
           return this.setLocation()
         }
-        //  set the status to what it is 
+        //  if it is not granted set the status to what it is - we need to ask for permission
         this.setState(() => ({ status }))
       })
       .catch((error) => {
@@ -48,7 +48,14 @@ export default class Live extends Component {
   }
 
   askPermission = () => {
-
+    Permissions.askAsync(Permissions.LOCATION)
+      .then(({ status}) => {
+        if (status === 'granted') {
+          return this.setLocation()
+        }
+        this.setState(() => ({status}))
+      })
+      .catch((error) => console.warn('error asking Location permission', error))
   }
 
   render() {
@@ -92,7 +99,7 @@ export default class Live extends Component {
             Your're heading
           </Text>
           <Text style={styles.direction}>
-            West
+            { direction }
           </Text>
         </View>
 
@@ -100,12 +107,12 @@ export default class Live extends Component {
 
           <View style={styles.metric}>
             <Text style={[styles.header, { color:white}]}>Altitude</Text>
-            <Text style={[styles.subHeader, {color:white}]}>{200} feet</Text>
+            <Text style={[styles.subHeader, {color:white}]}>{coords && Math.round(coords.altitude * 3.2808)} Feet</Text>
           </View>
 
           <View style={styles.metric}>
             <Text style={[styles.header, { color:white}]}>Speed</Text>
-            <Text style={[styles.subHeader, {color:white}]}>{300} MPH</Text>
+            <Text style={[styles.subHeader, {color:white}]}>{coords && (coords.speed * 2.2369).toFixed(1)} MPH</Text>
           </View>
 
         </View>
